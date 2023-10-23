@@ -1,0 +1,56 @@
+import java.util.ArrayList;
+import java.util.List;
+
+class Result {
+    public static List<Integer> icecreamParlor(int m, List<Integer> arr) {
+        List<Integer> result = new ArrayList<>();
+        findIceCreams(arr, m, 0, 1, result, new ArrayList<Integer>(), 0);
+        return result;
+    }
+
+    private static void findIceCreams(List<Integer> arr, int target, int currentIndex, int startIndex, List<Integer> result, List<Integer> selected, int count) {
+        if (count == 3) {
+            if (selected.get(0) + selected.get(1) + selected.get(2) == m) {
+                result.addAll(selected);
+            }
+            return;
+        }
+
+        if (currentIndex >= arr.size()) {
+            return;
+        }
+
+        for (int i = startIndex; i < arr.size(); i++) {
+            selected.add(arr.get(i));
+            findIceCreams(arr, target, currentIndex + 1, i + 1, result, selected, count + 1);
+            selected.remove(selected.size() - 1);
+        }
+    }
+
+    public static void main(String[] args) {
+        List<Integer> arr = Arrays.asList(1, 4, 5, 3, 2);
+        int m = 6;
+        List<Integer> result = Result.icecreamParlor(m, arr);
+
+        if (result.size() == 3) {
+            int cost1 = arr.get(result.get(0) - 1);
+            int cost2 = arr.get(result.get(1) - 1);
+            int cost3 = arr.get(result.get(2) - 1);
+            int totalCost = cost1 + cost2 + cost3;
+
+            if (totalCost == m) {
+                System.out.println("Test passed. Ice creams for three friends: " + cost1 + ", " + cost2 + ", " + cost3);
+            } else {
+                System.out.println("Test failed. Total cost is not equal to " + m);
+            }
+        } else {
+            System.out.println("Test failed. Did not find three ice creams for three friends.");
+        }
+    }
+}
+
+
+
+
+
+
